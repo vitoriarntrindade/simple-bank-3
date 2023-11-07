@@ -54,7 +54,7 @@ class Client:
         self.address = address
 
     def set_name(self, name: str) -> None:
-        name_parsed = name.replace(' ', '_')
+        name_parsed = name.lower().replace(' ', '_')
         self.name = name_parsed
 
     def get_name(self) -> str:
