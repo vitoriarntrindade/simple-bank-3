@@ -1,13 +1,16 @@
 from account import Account
 from client import Address, Client
+from utils import  read_csv_and_retrieve_accounts
+import csv
 
 bank_clients = []
 account_incremental_number = 0
 
 while True:
     operation = input("Which operation do you want to do?\n"
-                      "[1] Create Account \n"
-                      "[2] List Clients \n"
+                      "[1] Create Account\n"
+                      "[2] List Clients\n"
+                      "[3] Creat accounts by CSV file\n"
                       "[0] Logout \n")
 
     if operation == "1":
@@ -59,12 +62,36 @@ while True:
 
 
 
-    # if operation == "3":
-    #     print(client.get_name())
-    #     print(client.get_cpf())
-    #     print(bank_clients)
-    #     print(client.address.get_full_address())
-    #     print(client.accounts)
+    if operation == "3":
+
+        file_name_input = input("Digite o nome do arquivo csv \n")
+
+        accounts = read_csv_and_retrieve_accounts(file_name=file_name_input)
+
+        for account_ in accounts:
+
+            account = Account()
+            # account.set_account_number(account_number=account_incremental_number)
+
+            client_address = Address()
+            client_address.set_street_name(street_name=account_["street_name"])
+            client_address.set_number(number=account_["number"])
+            client_address.set_neighborhood(neighborhood=account_["neighborhood"])
+            client_address.set_state(state=account_["state"])
+
+            client = Client()
+            client.set_name(name=account_["name"])
+            client.set_birthday(birthday=account_["birthday"])
+            client.set_cpf(cpf=account_["cpf"])
+            client.set_account(account=account)
+            client.set_address(address=client_address)
+
+            account.set_client_id(client_id=client.id)
+
+            bank_clients.append(client)
+
+
+
 
     if operation == "4":
         pass
