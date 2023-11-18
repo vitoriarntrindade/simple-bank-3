@@ -1,6 +1,6 @@
 from account import Account
 from client import Address, Client
-from utils import  read_csv_and_retrieve_accounts
+from utils import read_csv_and_retrieve_accounts
 import csv
 
 bank_clients = []
@@ -60,18 +60,23 @@ while True:
         for client in bank_clients:
             client.get_full_client_data()
 
-
-
     if operation == "3":
 
         file_name_input = input("Digite o nome do arquivo csv \n")
 
-        accounts = read_csv_and_retrieve_accounts(file_name=file_name_input)
+        try:
+            if ".csv" not in file_name_input:
+                accounts = read_csv_and_retrieve_accounts(file_name=file_name_input + ".csv")
+            else:
+                accounts = read_csv_and_retrieve_accounts(file_name=file_name_input)
+        except:
+            print('Arquivo não encontrado, verifique o nome do arquivo e tente novamente!')
 
         for account_ in accounts:
+            account_incremental_number += 1
 
             account = Account()
-            # account.set_account_number(account_number=account_incremental_number)
+            account.set_account_number(account_number=account_incremental_number)
 
             client_address = Address()
             client_address.set_street_name(street_name=account_["street_name"])
@@ -89,9 +94,6 @@ while True:
             account.set_client_id(client_id=client.id)
 
             bank_clients.append(client)
-
-
-
 
     if operation == "4":
         pass
